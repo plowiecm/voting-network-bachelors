@@ -27,6 +27,7 @@ import { candidateComponent } from './candidate/candidate.component';
 import { voterComponent } from './voter/voter.component';
 
 import { voteComponent } from './vote/vote.component';
+import { MainComponent } from './main/main.component';
 
   @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { voteComponent } from './vote/vote.component';
     canVoteComponent,
     candidateComponent,
     voterComponent,
-    voteComponent
+    voteComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

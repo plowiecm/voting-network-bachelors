@@ -23,6 +23,7 @@ import { candidateComponent } from './candidate/candidate.component';
 import { voterComponent } from './voter/voter.component';
 
 import { voteComponent } from './vote/vote.component';
+import {MainComponent} from './main/main.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,7 +31,8 @@ const routes: Routes = [
   { path: 'candidate', component: candidateComponent },
   { path: 'voter', component: voterComponent },
   { path: 'vote', component: voteComponent },
-  { path: '**', redirectTo: '' }
+  { path: 'main', component: MainComponent},
+    { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
