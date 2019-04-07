@@ -115,7 +115,7 @@ p {
 
   #banner:before {
     content: '';
-  background: url('/app/asset/a.svg') no-repeat; 
+  background: url('./app/asset/a.svg') no-repeat; 
   background-size: cover;
     position: absolute;
     width: 100%;
