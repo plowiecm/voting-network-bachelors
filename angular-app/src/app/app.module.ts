@@ -20,56 +20,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './data.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
-import {FileSelectDirective} from 'ng2-file-upload';
-import { ChartsModule } from '@progress/kendo-angular-charts';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { PopupModule } from '@progress/kendo-angular-popup';
+
 import { canVoteComponent } from './canVote/canVote.component';
 import { candidateComponent } from './candidate/candidate.component';
 
 import { voterComponent } from './voter/voter.component';
 
 import { voteComponent } from './vote/vote.component';
-import { MainComponent } from './main/main.component';
-
-// material
-import {
-  MatCheckboxModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatSelectModule,
-  MatStepperModule,
-  MatRippleModule,
-  MatIconModule,
-  MatInputModule,
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatRadioModule,
-  MatSnackBarModule
-} from '@angular/material';
-import {MatFileUploadModule} from 'angular-material-fileupload';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatListModule} from '@angular/material/list';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSortModule} from '@angular/material/sort';
-
-
-// components
-// import {AppComponent} from './app.component';
-// import {EntryComponent} from './entry/entry.component';
-// import {VotepageComponent} from './votepage/votepage.component';
-
-// import {AppRoutingModule} from './/app-routing.module';
-// import { ResultsComponent } from './results/results.component';
-// import { CreateformComponent } from './createform/createform.component';
-
-
-// // services
-// import {GlobalService} from './global.service';
-// import { FillformComponent } from './fillform/fillform.component';
 
   @NgModule({
   declarations: [
@@ -78,43 +35,17 @@ import {MatSortModule} from '@angular/material/sort';
     canVoteComponent,
     candidateComponent,
     voterComponent,
-    voteComponent,
-    MainComponent,
-    FileSelectDirective
+    voteComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule,
-    MatSnackBarModule,
-    MatCheckboxModule,
-    MatRadioModule,    
-      MatFileUploadModule,
-      MatButtonModule,
-      MatCardModule,
-      MatDialogModule,
-      MatExpansionModule,
-      MatInputModule,
-      MatListModule,
-      MatIconModule,
-      BrowserAnimationsModule,
-      ChartsModule,
-      NgbModule.forRoot(),
-      HttpClientModule,
-      MatStepperModule,
-      MatDatepickerModule,
-      MatNativeDateModule,
-      MatSelectModule,
-      MatFormFieldModule,
-      MatRippleModule,
-      PopupModule,
-      MatSortModule
+    AppRoutingModule
   ],
   providers: [
-    DataService,
-    // GlobalService
+    DataService
   ],
   bootstrap: [AppComponent]
 })
