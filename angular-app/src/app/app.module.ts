@@ -20,6 +20,31 @@ import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './data.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
+import {FileSelectDirective} from 'ng2-file-upload';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSelectModule,
+  MatStepperModule,
+  MatRippleModule,
+  MatIconModule,
+  MatInputModule,
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatRadioModule,
+  MatSnackBarModule
+} from '@angular/material';
+
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSortModule} from '@angular/material/sort';
 
 import { canVoteComponent } from './canVote/canVote.component';
 import { candidateComponent } from './candidate/candidate.component';
@@ -27,6 +52,8 @@ import { candidateComponent } from './candidate/candidate.component';
 import { voterComponent } from './voter/voter.component';
 
 import { voteComponent } from './vote/vote.component';
+
+import {GlobalService} from './global.service';
 
   @NgModule({
   declarations: [
@@ -42,10 +69,36 @@ import { voteComponent } from './vote/vote.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSnackBarModule,
+    MatCheckboxModule,
+    MatRadioModule,    
+      BrowserModule,
+      AppRoutingModule,
+      MatButtonModule,
+      MatCardModule,
+      MatDialogModule,
+      FormsModule,
+      MatExpansionModule,
+      MatInputModule,
+      MatListModule,
+      MatIconModule,
+      BrowserAnimationsModule,
+      NgbModule.forRoot(),
+      HttpClientModule,
+      HttpModule,
+      MatStepperModule,
+      ReactiveFormsModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatSelectModule,
+      MatFormFieldModule,
+      MatRippleModule,
+      MatSortModule  
   ],
   providers: [
-    DataService
+    DataService,
+    GlobalService
   ],
   bootstrap: [AppComponent]
 })
