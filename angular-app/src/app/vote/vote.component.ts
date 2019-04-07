@@ -12,10 +12,12 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { voteService } from './vote.service';
 import 'rxjs/add/operator/toPromise';
+import {MatSnackBar} from '@angular/material';
+import {GlobalService} from '../global.service';
 
 @Component({
   selector: 'app-vote',
@@ -32,20 +34,32 @@ export class voteComponent implements OnInit {
   private currentId;
   private errorMessage;
 
+  options: string[] = ["opcja 1", 'opcja 2','opcja 3', 'opcja 4'];
+  message = 'Głos oddany!';  
+  title: string ='';
+
   candidateAsset = new FormControl('', Validators.required);
   canVoteAsset = new FormControl('', Validators.required);
   transactionId = new FormControl('', Validators.required);
   timestamp = new FormControl('', Validators.required);
 
 
-  constructor(private servicevote: voteService, fb: FormBuilder) {
+  constructor(private servicevote: voteService, fb: FormBuilder, private globals: GlobalService, private snackBar: MatSnackBar) {
     this.myForm = fb.group({
       candidateAsset: this.candidateAsset,
       canVoteAsset: this.canVoteAsset,
       transactionId: this.transactionId,
       timestamp: this.timestamp
     });
+    this.title = globals.role;
   };
+
+  openSnackBar() {
+    this.snackBar.open(this.message, '', {
+      duration: 4000,
+    });
+    this.message = 'Już oddałeś głos!';
+  }
 
   ngOnInit(): void {
     this.loadAll();

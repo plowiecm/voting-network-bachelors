@@ -16,6 +16,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { voterService } from './voter.service';
 import 'rxjs/add/operator/toPromise';
+import { GlobalService } from '../global.service';
+
 
 @Component({
   selector: 'app-voter',
@@ -32,21 +34,34 @@ export class voterComponent implements OnInit {
   private currentId;
   private errorMessage;
 
+  title: string ='';
+  isLinear = true;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  
   voterID = new FormControl('', Validators.required);
   firstName = new FormControl('', Validators.required);
   lastName = new FormControl('', Validators.required);
 
 
-  constructor(public servicevoter: voterService, fb: FormBuilder) {
+  constructor(public servicevoter: voterService, private fb: FormBuilder, private globals: GlobalService) {
     this.myForm = fb.group({
       voterID: this.voterID,
       firstName: this.firstName,
       lastName: this.lastName
     });
+
+    this.title = globals.role;
+
   };
 
   ngOnInit(): void {
     this.loadAll();
+    this.firstFormGroup = this.fb.group({
+      firstCtrl: ['', Validators.required] ,
+      secondCtrl: ['', Validators.required],
+      thirdCtrl: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]]
+    });
   }
 
   loadAll(): Promise<any> {

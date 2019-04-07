@@ -16,6 +16,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { candidateService } from './candidate.service';
 import 'rxjs/add/operator/toPromise';
+import {GlobalService} from '../global.service';
 
 @Component({
   selector: 'app-candidate',
@@ -31,11 +32,15 @@ export class candidateComponent implements OnInit {
   private asset;
   private currentId;
   private errorMessage;
+  isLinear = true;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  private role: string;
 
   politician = new FormControl('', Validators.required);
   totalVote = new FormControl('', Validators.required);
 
-  constructor(public servicecandidate: candidateService, fb: FormBuilder) {
+  constructor(public servicecandidate: candidateService, private fb: FormBuilder, private globals: GlobalService) {
     this.myForm = fb.group({
       politician: this.politician,
       totalVote: this.totalVote
@@ -44,6 +49,16 @@ export class candidateComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
+    this.firstFormGroup = this.fb.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this.fb.group({
+      secondCtrl: ['', Validators.required]
+    });
+  }
+
+  private changedRole() {
+    this.globals.role = this.role;
   }
 
   loadAll(): Promise<any> {
