@@ -15,7 +15,7 @@
             <mat-radio-group [(ngModel)]="choosenOne">
                 <ul>
                     <li *ngFor="let option of allAssets">
-                        <mat-radio-button value="after">{{option}}</mat-radio-button>
+                        <mat-radio-button value="{{option}}">{{option}}</mat-radio-button>
                     </li>
                   </ul>
              
@@ -28,7 +28,7 @@
 
       <div [hidden]="choosenOne=='' || choosenOne== null"  class ="button">
           <i class="material-icons">thumb_up</i><br>
-          <button (click)="openSnackBar()">Oddaj głos!</button>
+          <button (click)="openSnackBar()" (click)="addTransaction(choosenOne);" >Oddaj głos!</button>
         </div>
 
         <div class="button">

@@ -19,6 +19,7 @@ import { candidateService } from '../candidate/candidate.service';
 import 'rxjs/add/operator/toPromise';
 import {MatSnackBar} from '@angular/material';
 import {GlobalService} from '../global.service';
+import { stringify } from '@angular/core/src/render3/util';
 
 @Component({
   selector: 'app-vote',
@@ -30,11 +31,11 @@ export class voteComponent implements OnInit {
 
   myForm: FormGroup;
 
-  private allTransactions;
   private Transaction;
   private currentId;
   private errorMessage;
   private allAssets;
+  voterID;
 
   message = 'Głos oddany!';  
   title: string ='';
@@ -53,7 +54,7 @@ export class voteComponent implements OnInit {
       timestamp: this.timestamp
     });
     this.title = globals.role;
-
+    this.voterID = globals.voterId;
   };
 
   openSnackBar() {
@@ -114,21 +115,14 @@ export class voteComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addTransaction(form: any): Promise<any> {
+  addTransaction(choosen): Promise<any> {
     this.Transaction = {
       $class: 'voting.vote',
-      'candidateAsset': this.candidateAsset.value,
-      'canVoteAsset': this.canVoteAsset.value,
-      'transactionId': this.transactionId.value,
-      'timestamp': this.timestamp.value
-    };
-
-    this.myForm.setValue({
-      'candidateAsset': null,
-      'canVoteAsset': null,
+      'candidateAsset':  choosen,
+      'canVoteAsset': "resource:voting.canVote#" + this.voterID,
       'transactionId': null,
-      'timestamp': null
-    });
+      'timestamp': Date.now.toString
+    };
 
     return this.servicevote.addTransaction(this.Transaction)
     .toPromise()
@@ -150,48 +144,7 @@ export class voteComponent implements OnInit {
     });
   }
 
-  updateTransaction(form: any): Promise<any> {
-    this.Transaction = {
-      $class: 'voting.vote',
-      'candidateAsset': this.candidateAsset.value,
-      'canVoteAsset': this.canVoteAsset.value,
-      'timestamp': this.timestamp.value
-    };
-
-    return this.servicevote.updateTransaction(form.get('transactionId').value, this.Transaction)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
-  }
-
-  deleteTransaction(): Promise<any> {
-
-    return this.servicevote.deleteTransaction(this.currentId)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
-  }
-
+ 
   setId(id: any): void {
     this.currentId = id;
   }

@@ -114,6 +114,7 @@ export class voterComponent implements OnInit {
       'firstName': this.firstName.value,
       'lastName': this.lastName.value
     };
+    this.globals.voterId = this.voterID.value;
 
     this.myForm.setValue({
       'voterID': null,
