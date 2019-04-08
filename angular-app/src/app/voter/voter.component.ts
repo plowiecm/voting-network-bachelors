@@ -15,6 +15,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { voterService } from './voter.service';
+import { canVoteService } from '../canVote/canVote.service';
 import 'rxjs/add/operator/toPromise';
 import { GlobalService } from '../global.service';
 
@@ -33,18 +34,17 @@ export class voterComponent implements OnInit {
   private participant;
   private currentId;
   private errorMessage;
+  private asset;
 
   title: string ='';
   isLinear = true;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
   
   voterID = new FormControl('', Validators.required);
   firstName = new FormControl('', Validators.required);
   lastName = new FormControl('', Validators.required);
 
 
-  constructor(public servicevoter: voterService, private fb: FormBuilder, private globals: GlobalService) {
+  constructor(public servicevoter: voterService, public servicecanVote: canVoteService, private fb: FormBuilder, private globals: GlobalService) {
     this.myForm = fb.group({
       voterID: this.voterID,
       firstName: this.firstName,
@@ -57,11 +57,6 @@ export class voterComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
-    this.firstFormGroup = this.fb.group({
-      firstCtrl: ['', Validators.required] ,
-      secondCtrl: ['', Validators.required],
-      thirdCtrl: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]]
-    });
   }
 
   loadAll(): Promise<any> {
@@ -111,6 +106,8 @@ export class voterComponent implements OnInit {
   }
 
   addParticipant(form: any): Promise<any> {
+    this.addCanVoteAsset();
+
     this.participant = {
       $class: 'voting.voter',
       'voterID': this.voterID.value,
@@ -123,7 +120,7 @@ export class voterComponent implements OnInit {
       'firstName': null,
       'lastName': null
     });
-
+    
     return this.servicevoter.addParticipant(this.participant)
     .toPromise()
     .then(() => {
@@ -144,6 +141,32 @@ export class voterComponent implements OnInit {
     });
   }
 
+
+  addCanVoteAsset(): Promise<any> {
+    this.asset = {
+      $class: 'voting.canVote',
+      'voterID': this.voterID.value,
+      'hasVoted': false
+    };
+
+    return this.servicecanVote.addAsset(this.asset)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+      this.myForm.setValue({
+        'voterID': null,
+        'hasVoted': null
+      });
+      this.loadAll();
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+          this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else {
+          this.errorMessage = error;
+      }
+    });
+  }
 
    updateParticipant(form: any): Promise<any> {
     this.participant = {

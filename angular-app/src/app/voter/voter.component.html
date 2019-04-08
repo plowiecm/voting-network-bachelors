@@ -12,26 +12,28 @@
 
       <mat-vertical-stepper color='white' [linear]="isLinear" #stepper>
         <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup">
+          <form [formGroup]="myForm">
             <div class ='step'>
             <ng-template matStepLabel>Uzupełnij:</ng-template>
 
                 <mat-form-field>
-                  <input matInput placeholder="Imię" formControlName="firstCtrl" required>
+                  <input matInput placeholder="Imię" formControlName="firstName" type="text" required>
                 </mat-form-field>
 <br>
                 <mat-form-field>
-                    <input matInput placeholder="Nazwisko" formControlName="secondCtrl" required>
+                    <input matInput placeholder="Nazwisko" formControlName="lastName" type="text" required>
                   </mat-form-field>
                   <br>
                   <mat-form-field>
-                      <input matInput placeholder="PESEL" formControlName="thirdCtrl" required>
+                      <input matInput placeholder="PESEL" formControlName="voterID" type="text" required>
                     </mat-form-field>
               
                                         
               </div>
               <div>
-              <button mat-button matStepperNext>Dalej</button>
+                <button mat-button (click)="stepper.reset()">Wyczyść</button>
+              
+                  <button [disabled]="!myForm.valid" mat-button matStepperNext (click)="addParticipant(myForm);" type="submit" class="btn btn-success" data-dismiss="modal">Dalej</button>
             </div>
           </form>
         </mat-step>
@@ -40,10 +42,7 @@
             <div class="step">
           <ng-template matStepLabel>Gotowe!</ng-template>
               </div>
-          <div>
-            <button mat-button matStepperPrevious>Wstecz</button>
-            <button mat-button (click)="stepper.reset()">Wyczyść</button>
-          </div>
+         
 <div class="new-click">
     <i class="material-icons">forward</i><br>
     <a routerLink="/vote">Przejdź do głosowania!</a>

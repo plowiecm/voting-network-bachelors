@@ -17,6 +17,7 @@ import { DataService } from '../data.service';
 import { Observable } from 'rxjs/Observable';
 import { canVote } from '../voting';
 import 'rxjs/Rx';
+import { Http ,HttpModule} from '@angular/http';
 
 // Can be injected into a constructor
 @Injectable()

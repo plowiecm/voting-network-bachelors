@@ -54,6 +54,7 @@ import { voterComponent } from './voter/voter.component';
 import { voteComponent } from './vote/vote.component';
 
 import {GlobalService} from './global.service';
+import {canVoteService} from './canVote/canVote.service';
 
   @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import {GlobalService} from './global.service';
   ],
   providers: [
     DataService,
-    GlobalService
+    GlobalService,
+    canVoteService
   ],
   bootstrap: [AppComponent]
 })
