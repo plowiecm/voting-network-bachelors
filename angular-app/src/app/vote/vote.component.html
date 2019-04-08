@@ -14,7 +14,7 @@
           <section class="example-section">
             <mat-radio-group [(ngModel)]="choosenOne">
                 <ul>
-                    <li *ngFor="let option of options">
+                    <li *ngFor="let option of allAssets">
                         <mat-radio-button value="after">{{option}}</mat-radio-button>
                     </li>
                   </ul>

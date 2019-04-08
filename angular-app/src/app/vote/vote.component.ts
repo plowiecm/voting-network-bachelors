@@ -15,6 +15,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { voteService } from './vote.service';
+import { candidateService } from '../candidate/candidate.service';
 import 'rxjs/add/operator/toPromise';
 import {MatSnackBar} from '@angular/material';
 import {GlobalService} from '../global.service';
@@ -23,7 +24,7 @@ import {GlobalService} from '../global.service';
   selector: 'app-vote',
   templateUrl: './vote.component.html',
   styleUrls: ['./vote.component.css'],
-  providers: [voteService]
+  providers: [voteService, candidateService]
 })
 export class voteComponent implements OnInit {
 
@@ -33,8 +34,8 @@ export class voteComponent implements OnInit {
   private Transaction;
   private currentId;
   private errorMessage;
+  private allAssets;
 
-  options: string[] = ["opcja 1", 'opcja 2','opcja 3', 'opcja 4'];
   message = 'Głos oddany!';  
   title: string ='';
 
@@ -44,7 +45,7 @@ export class voteComponent implements OnInit {
   timestamp = new FormControl('', Validators.required);
 
 
-  constructor(private servicevote: voteService, fb: FormBuilder, private globals: GlobalService, private snackBar: MatSnackBar) {
+  constructor(public servicecandidate: candidateService, private servicevote: voteService, fb: FormBuilder, private globals: GlobalService, private snackBar: MatSnackBar) {
     this.myForm = fb.group({
       candidateAsset: this.candidateAsset,
       canVoteAsset: this.canVoteAsset,
@@ -52,6 +53,7 @@ export class voteComponent implements OnInit {
       timestamp: this.timestamp
     });
     this.title = globals.role;
+
   };
 
   openSnackBar() {
@@ -67,14 +69,14 @@ export class voteComponent implements OnInit {
 
   loadAll(): Promise<any> {
     const tempList = [];
-    return this.servicevote.getAll()
+    return this.servicecandidate.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
-      result.forEach(transaction => {
-        tempList.push(transaction);
+      result.forEach(asset => {
+        tempList.push(asset.politician);
       });
-      this.allTransactions = tempList;
+      this.allAssets = tempList;
     })
     .catch((error) => {
       if (error === 'Server error') {
