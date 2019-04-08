@@ -1,0 +1,42 @@
+<!-- Banner -->
+<section id="banner">
+  <div class="inner">
+    <header>
+      <h1 class="title_main"> {{title}}</h1>
+    </header>
+
+    <p>Wykres dla aktualnych wyników</p>
+    <br>
+    <br>
+
+    <div class='chart'>
+      <kendo-chart k-chart-area="{ background: '' }">
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item [categories]="categories">
+            <kendo-chart-category-axis-item-crosshair>
+              <kendo-chart-category-axis-item-crosshair-tooltip>
+              </kendo-chart-category-axis-item-crosshair-tooltip>
+            </kendo-chart-category-axis-item-crosshair>
+          </kendo-chart-category-axis-item>
+        </kendo-chart-category-axis>
+        <kendo-chart-value-axis>
+          <kendo-chart-value-axis-item [crosshair]="crosshair">
+          </kendo-chart-value-axis-item>
+        </kendo-chart-value-axis>
+        <kendo-chart-series >
+          <kendo-chart-series-item [data]="data">
+          </kendo-chart-series-item>
+        </kendo-chart-series>
+      </kendo-chart>
+
+
+    </div>
+
+ 
+
+    <div class="button">
+      <a routerLink="/main">Powrót</a>
+    </div>
+
+  </div>
+</section>

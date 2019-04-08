@@ -46,16 +46,15 @@ export class candidateComponent implements OnInit {
  
   constructor(public servicecandidate: candidateService, private fb: FormBuilder, private globals: GlobalService) {
     this.secondFormGroup = fb.group({
-      option1: new FormControl ('', Validators.required),
+      option1: this.option1,
       option2: this.option2,
       option3: this.option3,
       option4: this.option4,
       option5: this.option5
-    }, {validator: this.validateEmail});
+    }, {validator: this.validateOption});
   };
 
   ngOnInit(): void {
-    this.loadAll();
     this.firstFormGroup = this.fb.group({
       firstCtrl: ['', Validators.required]
     });
@@ -65,27 +64,6 @@ export class candidateComponent implements OnInit {
     this.globals.role = this.role;
   }
 
-  loadAll(): Promise<any> {
-    const tempList = [];
-    return this.servicecandidate.getAll()
-    .toPromise()
-    .then((result) => {
-      this.errorMessage = null;
-      result.forEach(asset => {
-        tempList.push(asset);
-      });
-      this.allAssets = tempList;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
-  }
 
 	/**
    * Event handler for changing the checked state of a checkbox (handles array enumeration values)
@@ -135,7 +113,6 @@ export class candidateComponent implements OnInit {
     .then(() => {
       this.errorMessage = null;
     
-      this.loadAll();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -153,7 +130,6 @@ export class candidateComponent implements OnInit {
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.loadAll();
     })
     .catch((error) => {
       if (error === 'Server error') {
@@ -166,8 +142,52 @@ export class candidateComponent implements OnInit {
     });
   }
 
+
+  deleteAllAssets(): Promise<any>{
+    return this.servicecandidate.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.currentId = asset.politician;
+        this.deleteAsset();      
+      });
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    }); 
+  }
+
   setId(id: any): void {
     this.currentId = id;
+  }
+
+  loadAll(): Promise<any> {
+    const tempList = [];
+    return this.servicecandidate.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        tempList.push(asset.politician);
+      });
+      this.allAssets = tempList;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
   }
 
   getForm(id: any): Promise<any> {
@@ -214,15 +234,24 @@ export class candidateComponent implements OnInit {
       });
   }
 
-  validateEmail(group: FormGroup) {
+  validateOption(group: FormGroup) {
     Object.keys(group.controls).forEach(keyy => {
       const politician = group.get(keyy).value;
+
+     if( group.get(keyy).getError("required")){
+        group.get(keyy).setErrors({
+        "required":  group.get(keyy).getError("required"),
+        "myError": null
+       })
+     } else {
       group.get(keyy).setErrors(null);
+     }
+      
         
       Object.keys(group.controls).forEach(key => {
         
-        if(keyy!= key && politician==group.get(key).value){
-            group.get(key).setErrors({ error: true } );
+        if(keyy!= key &&  politician!=null && politician!='' && politician==group.get(key).value){
+            group.get(key).setErrors({ myError: true } );
             return { errorMessage: 'Dwie opcje są jednakowe!' }
         }
 

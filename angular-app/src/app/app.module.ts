@@ -24,6 +24,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from '@progress/kendo-angular-charts';
+import { PopupModule } from '@progress/kendo-angular-popup';
 
 import {
   MatCheckboxModule,
@@ -55,6 +57,8 @@ import { voteComponent } from './vote/vote.component';
 
 import {GlobalService} from './global.service';
 import {canVoteService} from './canVote/canVote.service';
+import { ResultsComponent } from './results/results.component';
+import 'hammerjs';
 
   @NgModule({
   declarations: [
@@ -63,7 +67,8 @@ import {canVoteService} from './canVote/canVote.service';
     canVoteComponent,
     candidateComponent,
     voterComponent,
-    voteComponent
+    voteComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +100,9 @@ import {canVoteService} from './canVote/canVote.service';
       MatSelectModule,
       MatFormFieldModule,
       MatRippleModule,
-      MatSortModule  
+      MatSortModule,
+      ChartsModule,
+      PopupModule
   ],
   providers: [
     DataService,

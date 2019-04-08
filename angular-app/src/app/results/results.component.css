@@ -1,0 +1,12 @@
+.chart{
+    height: auto;
+    margin: 1em 10em 10em 10em;
+    background: white;
+    width: 80em;
+    align-content: center;
+    align-items: center;
+}
+
+.inner{
+    align-content: center !important;
+}

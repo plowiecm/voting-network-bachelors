@@ -19,10 +19,10 @@ import { HomeComponent } from './home/home.component';
 
 import { canVoteComponent } from './canVote/canVote.component';
 import { candidateComponent } from './candidate/candidate.component';
-
 import { voterComponent } from './voter/voter.component';
-
 import { voteComponent } from './vote/vote.component';
+import { ResultsComponent } from './results/results.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,6 +30,7 @@ const routes: Routes = [
   { path: 'candidate', component: candidateComponent },
   { path: 'voter', component: voterComponent },
   { path: 'vote', component: voteComponent },
+  { path: 'results', component: ResultsComponent },
   { path: '**', redirectTo: '' }
 ];
 

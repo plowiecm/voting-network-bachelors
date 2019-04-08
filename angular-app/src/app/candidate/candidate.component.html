@@ -20,7 +20,7 @@
             
               </div>
               <div>
-              <button mat-button matStepperNext>Dalej</button>
+              <button (click)="deleteAllAssets()" mat-button matStepperNext>Dalej</button>
             </div>
           </form>
         </mat-step>
@@ -62,7 +62,7 @@
           </div>
 <div class="new-click">
           <i class="material-icons">build</i><br>
-        <a (click)="changedRole()" (click)="addAsset(myForm);" >Stwórz nowe głosowanie!</a> <!-- routerLink="/main"-->
+        <a (click)="changedRole()" routerLink="/main" (click)="addAsset(myForm);" >Stwórz nowe głosowanie!</a> 
       </div>
         </mat-step>
       </mat-vertical-stepper>
