@@ -43,16 +43,15 @@ export class candidateComponent implements OnInit {
   option4= new FormControl ('');
   option5= new FormControl ('');
 
-     
-
+ 
   constructor(public servicecandidate: candidateService, private fb: FormBuilder, private globals: GlobalService) {
     this.secondFormGroup = fb.group({
-      option1: this.option1,
+      option1: new FormControl ('', Validators.required),
       option2: this.option2,
       option3: this.option3,
       option4: this.option4,
       option5: this.option5
-    });
+    }, {validator: this.validateEmail});
   };
 
   ngOnInit(): void {
@@ -113,10 +112,21 @@ export class candidateComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addAsset(form: any): Promise<any> {
+  addAsset(form: any) {
+
+    Object.keys(this.secondFormGroup.controls).forEach(key => {
+      const politician = this.secondFormGroup.get(key).value;
+
+      if(politician && politician.length > 0){
+        this.addOneAsset(politician);
+      }
+    });
+  }
+
+  addOneAsset(politician): Promise<any> {
     this.asset = {
       $class: 'voting.candidate',
-      'politician': this.option1.value,
+      'politician': politician,
       'totalVote': 0
     };
 
@@ -204,4 +214,23 @@ export class candidateComponent implements OnInit {
       });
   }
 
+  validateEmail(group: FormGroup) {
+    Object.keys(group.controls).forEach(keyy => {
+      const politician = group.get(keyy).value;
+      group.get(keyy).setErrors(null);
+        
+      Object.keys(group.controls).forEach(key => {
+        
+        if(keyy!= key && politician==group.get(key).value){
+            group.get(key).setErrors({ error: true } );
+            return { errorMessage: 'Dwie opcje są jednakowe!' }
+        }
+
+      });    
+    });    
+    return  null;    
+  }
+
 }
+
+
