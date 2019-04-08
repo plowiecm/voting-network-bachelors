@@ -29,19 +29,19 @@
             <div class="step">
             <ng-template matStepLabel>Dodaj opcje</ng-template>
             <mat-form-field>
-              <input matInput placeholder="Opcja 1" formControlName="secondCtrl" required>
+              <input matInput placeholder="Opcja 1" formControlName="option1" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Opcja 2" formControlName="secondCtrl" required>
+              <input matInput placeholder="Opcja 2" formControlName="option2" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Opcja 3" formControlName="secondCtrl">
+              <input matInput placeholder="Opcja 3" formControlName="option3">
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Opcja 4" formControlName="secondCtrl">
+              <input matInput placeholder="Opcja 4" formControlName="option4">
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Opcja 5" formControlName="secondCtrl">
+              <input matInput placeholder="Opcja 5" formControlName="option5">
             </mat-form-field>
           </div>
             <div>
@@ -62,7 +62,7 @@
           </div>
 <div class="new-click">
           <i class="material-icons">build</i><br>
-        <a (click)="changedRole()" routerLink="/main">Stwórz nowe głosowanie!</a>
+        <a (click)="changedRole()" (click)="addAsset(myForm);" >Stwórz nowe głosowanie!</a> <!-- routerLink="/main"-->
       </div>
         </mat-step>
       </mat-vertical-stepper>

@@ -37,13 +37,21 @@ export class candidateComponent implements OnInit {
   secondFormGroup: FormGroup;
   private role: string;
 
-  politician = new FormControl('', Validators.required);
-  totalVote = new FormControl('', Validators.required);
+  option1= new FormControl ('', Validators.required);
+  option2= new FormControl ('', Validators.required);
+  option3= new FormControl ('');
+  option4= new FormControl ('');
+  option5= new FormControl ('');
+
+     
 
   constructor(public servicecandidate: candidateService, private fb: FormBuilder, private globals: GlobalService) {
-    this.myForm = fb.group({
-      politician: this.politician,
-      totalVote: this.totalVote
+    this.secondFormGroup = fb.group({
+      option1: this.option1,
+      option2: this.option2,
+      option3: this.option3,
+      option4: this.option4,
+      option5: this.option5
     });
   };
 
@@ -51,9 +59,6 @@ export class candidateComponent implements OnInit {
     this.loadAll();
     this.firstFormGroup = this.fb.group({
       firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this.fb.group({
-      secondCtrl: ['', Validators.required]
     });
   }
 
@@ -111,23 +116,15 @@ export class candidateComponent implements OnInit {
   addAsset(form: any): Promise<any> {
     this.asset = {
       $class: 'voting.candidate',
-      'politician': this.politician.value,
-      'totalVote': this.totalVote.value
+      'politician': this.option1.value,
+      'totalVote': 0
     };
-
-    this.myForm.setValue({
-      'politician': null,
-      'totalVote': null
-    });
 
     return this.servicecandidate.addAsset(this.asset)
     .toPromise()
     .then(() => {
       this.errorMessage = null;
-      this.myForm.setValue({
-        'politician': null,
-        'totalVote': null
-      });
+    
       this.loadAll();
     })
     .catch((error) => {
@@ -135,30 +132,6 @@ export class candidateComponent implements OnInit {
           this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
       } else {
           this.errorMessage = error;
-      }
-    });
-  }
-
-
-  updateAsset(form: any): Promise<any> {
-    this.asset = {
-      $class: 'voting.candidate',
-      'totalVote': this.totalVote.value
-    };
-
-    return this.servicecandidate.updateAsset(form.get('politician').value, this.asset)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
-      this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
       }
     });
   }
