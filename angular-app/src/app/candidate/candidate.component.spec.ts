@@ -77,26 +77,6 @@ describe('candidateComponent', () => {
     loadAllSpy.restore();
   }));
 
-  it('should update the table when a candidate is updated', fakeAsync(() => {
-    let loadAllSpy = sinon.stub(component, 'loadAll');
-    sinon.stub(component.servicecandidate, 'updateAsset').returns(new Observable<any>(observer => {
-      observer.next('');
-      observer.complete();
-    }));
-
-    // mock form to be passed to the update function
-    let mockForm = new FormGroup({
-      politician: new FormControl('id')
-    });
-
-    component.updateAsset(mockForm);
-
-    tick();
-
-    expect(loadAllSpy.callCount).toBe(1);
-
-    loadAllSpy.restore();
-  }));
 
   it('should update the table when a candidate is deleted', fakeAsync(() => {
     let loadAllSpy = sinon.stub(component, 'loadAll');
@@ -107,7 +87,7 @@ describe('candidateComponent', () => {
 
     component.setId('id');
     
-    component.deleteAsset();
+    component.deleteCandidateAsset();
 
     tick();
 

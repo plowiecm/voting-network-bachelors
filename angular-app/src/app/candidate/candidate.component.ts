@@ -15,6 +15,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { candidateService } from './candidate.service';
+import { canVoteService } from '../canVote/canVote.service';
+import { voterService } from '../voter/voter.service';
+
 import 'rxjs/add/operator/toPromise';
 import {GlobalService} from '../global.service';
 
@@ -22,7 +25,7 @@ import {GlobalService} from '../global.service';
   selector: 'app-candidate',
   templateUrl: './candidate.component.html',
   styleUrls: ['./candidate.component.css'],
-  providers: [candidateService]
+  providers: [candidateService, canVoteService, voterService]
 })
 export class candidateComponent implements OnInit {
 
@@ -44,7 +47,7 @@ export class candidateComponent implements OnInit {
   option5= new FormControl ('');
 
  
-  constructor(public servicecandidate: candidateService, private fb: FormBuilder, private globals: GlobalService) {
+  constructor(public servicecandidate: candidateService, public canVoteService: canVoteService, public voterService: voterService ,private fb: FormBuilder, private globals: GlobalService) {
     this.secondFormGroup = fb.group({
       option1: this.option1,
       option2: this.option2,
@@ -124,8 +127,7 @@ export class candidateComponent implements OnInit {
   }
 
 
-  deleteAsset(): Promise<any> {
-
+  deleteCandidateAsset(): Promise<any> {
     return this.servicecandidate.deleteAsset(this.currentId)
     .toPromise()
     .then(() => {
@@ -142,15 +144,21 @@ export class candidateComponent implements OnInit {
     });
   }
 
+  deleteAllAssets(){
+    this.deleteAllCanVoteAssets();
+    this.deleteAllCandidateAssets();
+    this.deleteAllVoterParticipants();
+  }
 
-  deleteAllAssets(): Promise<any>{
+
+  deleteAllCandidateAssets(): Promise<any>{
     return this.servicecandidate.getAll()
     .toPromise()
     .then((result) => {
       this.errorMessage = null;
       result.forEach(asset => {
         this.currentId = asset.politician;
-        this.deleteAsset();      
+        this.deleteCandidateAsset();      
       });
     })
     .catch((error) => {
@@ -166,6 +174,83 @@ export class candidateComponent implements OnInit {
 
   setId(id: any): void {
     this.currentId = id;
+  }
+
+
+  deleteCanVoteAsset(): Promise<any> {
+    return this.canVoteService.deleteAsset(this.currentId)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  deleteAllCanVoteAssets(): Promise<any>{
+    return this.canVoteService.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.currentId = asset.voterID;
+        this.deleteCanVoteAsset();      
+      });
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    }); 
+  }
+
+  deleteVoterParticipant(): Promise<any> {
+    return this.voterService.deleteParticipant(this.currentId)
+    .toPromise()
+    .then(() => {
+      this.errorMessage = null;
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    });
+  }
+
+  deleteAllVoterParticipants(): Promise<any>{
+    return this.voterService.getAll()
+    .toPromise()
+    .then((result) => {
+      this.errorMessage = null;
+      result.forEach(asset => {
+        this.currentId = asset.voterID;
+        this.deleteVoterParticipant();      
+      });
+    })
+    .catch((error) => {
+      if (error === 'Server error') {
+        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+      } else if (error === '404 - Not Found') {
+        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
+      } else {
+        this.errorMessage = error;
+      }
+    }); 
   }
 
   loadAll(): Promise<any> {
