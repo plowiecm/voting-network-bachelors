@@ -13,9 +13,12 @@
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup">
             <div class ='step'>
-            <ng-template matStepLabel>Uzupełnij tytuł głosowania</ng-template>
+            <ng-template matStepLabel>Uzupełnij tytuł głosowania i liczbę osób uprawnionych do głosowania</ng-template>
             <mat-form-field>
               <input matInput placeholder="Tytuł głosowania" formControlName="firstCtrl" required [(ngModel)]="role">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Liczba uprawnionych" formControlName="firstCtrl" required [(ngModel)]="globalCount">
             </mat-form-field>
             
               </div>

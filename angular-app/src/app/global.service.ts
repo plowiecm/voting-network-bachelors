@@ -4,5 +4,6 @@ import { Injectable } from '@angular/core';
 export class GlobalService {
   role: string = 'TYTUŁ GŁOSOWANIA';
   voterId: string = '';
+  globalCount: string = '';
   constructor() { }
 }

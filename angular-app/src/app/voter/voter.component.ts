@@ -39,7 +39,7 @@ export class voterComponent implements OnInit {
   title: string ='';
   isLinear = true;
   
-  voterID = new FormControl('', Validators.required);
+  voterID = new FormControl('', [Validators.required, Validators.pattern('^[0-9]{11}$')]);
   firstName = new FormControl('', Validators.required);
   lastName = new FormControl('', Validators.required);
 

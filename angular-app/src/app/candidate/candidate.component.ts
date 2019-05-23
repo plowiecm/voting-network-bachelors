@@ -39,6 +39,7 @@ export class candidateComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   private role: string;
+  private globalCount: string;
 
   option1= new FormControl ('', Validators.required);
   option2= new FormControl ('', Validators.required);
@@ -65,6 +66,7 @@ export class candidateComponent implements OnInit {
 
   private changedRole() {
     this.globals.role = this.role;
+    this.globals.globalCount = this.globalCount;
   }
 
 

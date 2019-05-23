@@ -13,13 +13,17 @@ export class ResultsComponent implements OnInit {
   categories = ['a','b'];
   data = ['1','20'];
   private errorMessage;
+  attendance;
+  private globalCount;
 
   ngOnInit(): void {
-    this.loadAll();
+    this.loadAll().then(res => this.countAttendace());
   }
 
   constructor(private globals: GlobalService, private servicecandidate: candidateService) { 
     this.title = globals.role;
+    this.globalCount = globals.globalCount;
+    this.attendance = 100;
   }
   
   public crosshair: any = {
@@ -54,6 +58,19 @@ export class ResultsComponent implements OnInit {
         this.errorMessage = error;
       }
     });
+  }
+
+
+  countAttendace(){
+    var countVoters = 0;
+
+    for (let i of this.data ){
+      countVoters += +i;
+   }
+
+   this.attendance = countVoters/+this.globalCount;
+
+   var a =0;
   }
 
 }
